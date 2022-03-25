@@ -1,0 +1,21 @@
+.message-box{
+
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+    border: 5px solid black;
+    display:  inline-block;
+
+    width:70%;
+    height:75%;
+    overflow-y:auto
+  }
+
+.messages{
+
+    height: 65%;
+     width: 100%;
+     overflow-y:auto
+
+  }

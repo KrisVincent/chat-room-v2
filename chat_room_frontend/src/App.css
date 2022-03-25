@@ -1,0 +1,17 @@
+.Form{
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid black;
+  border-radius: 25px;
+  padding: 10px;
+  width: 30%;
+}
+
+.btn-space{
+
+  margin: 5px;
+  
+}
