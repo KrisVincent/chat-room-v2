@@ -23,23 +23,49 @@ function ChatRoom() {
 
   const socket = useRef()
 
+  //connect when successfully logged in
   useEffect(() => {
+
+
+    if( Object.keys(id).length === 0)
+   {
+
+    history("/")
+    
+   }
+
+   //set all user data
+   APIservice.get_user_data(id["id"])
+   .then(resp => setUser(resp))
+
+   APIservice.get_messages()
+   .then(resp => setChat(resp))
+
+   APIservice.get_all_user()
+   .then(resp => setAll(resp))
+
     socket.current = io("ws://localhost:9013");
 
     socket.current.on("connnection", () => {
      
     });
+
+
+
     
   }, []);
 
-
+  //keep listening for emits
   useEffect(() => {
 
       socket.current.on("message", ({name, message, id, todaysDate }) => {
-        console.log(name)
+       
         setChat([ ...chat, {"id": id, "client_name":name, "content": message, "date_created": todaysDate } ])
       
 			})
+
+     
+   
     })
 
   const sendMSG = (e) =>{
@@ -71,28 +97,7 @@ function ChatRoom() {
 
   }
 
-  //This Function runs when the page is visited
-  useEffect(()=> {
-   //This checks if someone is already logged in
-   if( Object.keys(id).length === 0)
-   {
-
-    history("/")
-    
-   }
-
-   //set all user data
-   APIservice.get_user_data(id["id"])
-   .then(resp => setUser(resp))
-
-   APIservice.get_messages()
-   .then(resp => setChat(resp))
-
-   APIservice.get_all_user()
-   .then(resp => setAll(resp))
-
   
-  },[])
 
 
   return (
@@ -105,13 +110,27 @@ function ChatRoom() {
           <ListGroup as="ol">
           {chat.map(chat => {
              return(
-            <ListGroup.Item as="li" key={chat.message_id}> 
-            
-                  <h6>{chat.client_name}</h6>
-                  <a href="#" >{chat.content}</a><br/>
-                  <span>Date Sent: {chat.date_created}</span>
-            </ListGroup.Item>
+            <div>
+              {id["id"] == chat.client_id
+                ?
+                <ListGroup.Item as="li" key={chat.message_id} variant = "success"> 
+                    <h6>{chat.client_name}</h6>
+                    <p >{chat.content}</p>
+                    <span>Date Sent: {chat.date_created}</span>
+                </ListGroup.Item>
 
+                : 
+
+                <ListGroup.Item as="li" key={chat.message_id + 1}>
+                  <h6>{chat.client_name}</h6>
+                  <p >{chat.content}</p>
+                      <span>Date Sent: {chat.date_created}</span>
+                </ListGroup.Item> } 
+
+            
+               
+                 
+            </div>
             )
             })}
             
@@ -120,7 +139,7 @@ function ChatRoom() {
           </div>
           <Form className= {sendMSG} key = {8788}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Example textarea</Form.Label>
+              <Form.Label>Send Message!</Form.Label>
               <Form.Control  as="input" rows={3} value= {msg} onChange={e => setMsg(e.target.value)}/>
           
             </Form.Group>

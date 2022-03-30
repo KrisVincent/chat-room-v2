@@ -42,10 +42,9 @@ function History() {
           
           {chat.map(chat => {
              return(
-            <ListGroup.Item as="li" key={chat.message_id}> 
-            
-                  <h6>{chat.client_name}</h6>
-                  <a href="#" >{chat.content}</a><br/>
+              <ListGroup.Item as="li" key={chat.message_id}>
+              <h6>{chat.client_name}</h6>
+              <p >{chat.content}</p>
                   <span>Date Sent: {chat.date_created}</span>
             </ListGroup.Item>
 
